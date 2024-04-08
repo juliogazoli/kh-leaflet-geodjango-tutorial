@@ -40,13 +40,23 @@ function init() {
         'Perth image': imagePerthOverlay
     }
 
-    // mymap.on('click', function (event) {
-    //     console.log(event.latlng)
-    // })
-
     // Layer control
     const layerControl = L.control.layers(baseLayers, overlayerLayers, {
         collapsed: false,
         position: 'topright'
     }).addTo(mymap)
+
+    mymap.on('click', function (e) {
+        console.log(e.latlng)
+    })
+
+    // Perth marker
+    const perthMarker = L.marker([-32.01791974628008, 115.89434607367286], {
+        title: 'Perth city',
+        opacity: 0.5,
+
+    }).addTo(mymap)
+
+    const perthMarkerPopup = perthMarker.bindPopup('Perth city from the popup')
+    const perthMarkerTooltip = perthMarker.bindTooltip('Perth city from the tooltip').openTooltip()
 }
