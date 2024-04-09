@@ -29,10 +29,6 @@ function init() {
         layers: [openStreetMapStandard]
     })
 
-    mymap.on('zoom', function (e) {
-        console.log(e.target._zoom)
-    })
-
     // Basemap Object
     const baseLayers = {
         '<b>openStreetMapStandard</b>': openStreetMapStandard,
@@ -55,10 +51,6 @@ function init() {
         position: 'topright'
     }).addTo(mymap)
 
-    mymap.on('click', function (e) {
-        console.log(e.latlng)
-    })
-
     // Perth marker
     const perthMarker = L.marker([-32.01791974628008, 115.89434607367286], {
         title: 'Perth city',
@@ -67,4 +59,24 @@ function init() {
 
     const perthMarkerPopup = perthMarker.bindPopup('Perth city from the popup')
     const perthMarkerTooltip = perthMarker.bindTooltip('Perth city from the tooltip').openTooltip()
+
+    // Geolocation API
+    mymap.locate({ setView: true, maxZoom: 18 })
+
+    function onLocationFound(e) {
+        var radius = e.accuracy.toFixed(2)
+
+        var locationMarker = L.marker(e.latlng).addTo(mymap)
+            .bindPopup('You are within ' + radius + ' metres from this point').openPopup()
+
+        var locationCircle = L.circle(e.latlng, radius).addTo(mymap)
+    }
+
+    mymap.on('locationfound', onLocationFound)
+
+    function onLocationError(e) {
+        window.alert(e.message)
+    }
+
+    mymap.on('locationerror', onLocationError)
 }
