@@ -8,6 +8,7 @@ function init() {
     // Basemaps
     const openStreetMapStandard = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
+        noWrap: true,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     })
 
@@ -19,9 +20,17 @@ function init() {
     // Leaflet map object
     const mymap = L.map(mapElement, {
         center: [48, 14],
-        zoom: 5,
-        minZoom: 4,
+        zoom: 2,
+        minZoom: 1,
+        zoomSnap: 0.25,
+        zoomDelta: 0.25,
+        easeLinearity: 0.2,
+        worldCopyJump: true,
         layers: [openStreetMapStandard]
+    })
+
+    mymap.on('zoom', function (e) {
+        console.log(e.target._zoom)
     })
 
     // Basemap Object
@@ -54,7 +63,6 @@ function init() {
     const perthMarker = L.marker([-32.01791974628008, 115.89434607367286], {
         title: 'Perth city',
         opacity: 0.5,
-
     }).addTo(mymap)
 
     const perthMarkerPopup = perthMarker.bindPopup('Perth city from the popup')
