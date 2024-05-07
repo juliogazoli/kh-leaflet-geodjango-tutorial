@@ -81,12 +81,18 @@ function init() {
     mymap.on('locationerror', onLocationError)
 
     // Distance calculation demo
+    /*
     const myCustomIcon = L.icon({
         iconUrl: './Data/icon_point.png',
         iconSize: [40, 40],
         iconAnchor:[20, 40],
         popupAnchor: [0, -20]
     })
+    */
+    const myDivIcon = L.divIcon({
+        className: 'my-div-icon',
+        iconSize: 50
+   })
 
     var counter = 0
     var coordinates = []
@@ -101,7 +107,7 @@ function init() {
             closeOnClick: false
         }).setContent(String(counter))
 
-        L.marker(latlng, {icon: myCustomIcon})
+        L.marker(latlng, { icon: myDivIcon })
             .addTo(mymap)
             .bindPopup(popup)
             .openPopup()
