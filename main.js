@@ -105,4 +105,7 @@ function init() {
             coordinates.shift()
         }
     })
+
+    console.log(mymap.dragging.disable())
+    console.log(mymap.dragging.enabled())
 }
