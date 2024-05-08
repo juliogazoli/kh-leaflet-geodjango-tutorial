@@ -59,28 +59,24 @@ function init() {
     const perthMarkerPopup = perthMarker.bindPopup('Perth city from the popup')
     const perthMarkerTooltip = perthMarker.bindTooltip('Perth city from the tooltip').openTooltip()
 
-    var drawPolyLine = L.polyline([], {
-        color: 'red',
-        smoothFactor: 0.1,
-        weight: 6,
-    }).addTo(mymap)
+    var polygon = L.polygon([], {color: 'red'}).addTo(mymap);
 
     mymap.on('click', function (e) {
         let latlng = e.latlng
-        drawPolyLine.addLatLng(latlng)
+        polygon.addLatLng(latlng)
     })
 
-    var masterPolyLine = L.polyline([], { color: 'blue' }).addTo(mymap)
-    var masterLineCoordinates = []
+    var masterPolygon = L.polygon([], { color: 'blue' }).addTo(mymap)
+    var masterPolygonCoordinates = []
     mymap.on('dblclick', function (e) {
-        let clickedAllCoordinates = drawPolyLine.getLatLngs()
-        let clickedAllCoordinatesExceptTheLastOne = clickedAllCoordinates.slice(0, length - 1)
+        let clickedAllCoordinates = polygon.getLatLngs()        
+        let clickedAllCoordinatesExceptTheLastOne = clickedAllCoordinates[0].slice(0, clickedAllCoordinates[0].length - 1)
 
-        masterLineCoordinates.push(clickedAllCoordinatesExceptTheLastOne)
-        masterPolyLine.setLatLngs(masterLineCoordinates)
+        masterPolygonCoordinates.push(clickedAllCoordinatesExceptTheLastOne)
+        masterPolygon.setLatLngs(masterPolygonCoordinates)
 
-        drawPolyLine.setLatLngs([])
-
-        console.log(masterPolyLine.toGeoJSON())
+        // Remove all lat and lng values in the polygon object
+        polygon.setLatLngs([])
     })
+    
 }
