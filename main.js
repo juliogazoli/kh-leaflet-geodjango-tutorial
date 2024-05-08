@@ -59,24 +59,24 @@ function init() {
     const perthMarkerPopup = perthMarker.bindPopup('Perth city from the popup')
     const perthMarkerTooltip = perthMarker.bindTooltip('Perth city from the tooltip').openTooltip()
 
-    var latlngs = [
-        [45.51, -122.68],
-        [37.77, -122.43],
-        [34.04, -118.2]
-    ]
-
-    var polyline = L.polyline(latlngs, { color: 'red' }).addTo(mymap)
-    mymap.fitBounds(polyline.getBounds())
-
-    var lineCoordinates = []
-    var drawPolyline = L.polyline([], { color: 'red' }).addTo(mymap)
+    var drawPolyLine = L.polyline([], { color: 'red' }).addTo(mymap)
 
     mymap.on('click', function (e) {
         let latlng = e.latlng
-        lineCoordinates.push(latlng)
+        drawPolyLine.addLatLng(latlng)
+    })
 
-        if (lineCoordinates.length > 1) {
-            drawPolyline.setLatLngs(lineCoordinates)
-        }
+    var masterPolyLine = L.polyline([], { color: 'blue' }).addTo(mymap)
+    var masterLineCoordinates = []
+    mymap.on('dblclick', function (e) {
+        let clickedAllCoordinates = drawPolyLine.getLatLngs()
+        let clickedAllCoordinatesExceptTheLastOne = clickedAllCoordinates.slice(0, length - 1)
+
+        masterLineCoordinates.push(clickedAllCoordinatesExceptTheLastOne)
+        masterPolyLine.setLatLngs(masterLineCoordinates)
+
+        drawPolyLine.setLatLngs([])
+
+        console.log(masterPolyLine.toGeoJSON())
     })
 }
