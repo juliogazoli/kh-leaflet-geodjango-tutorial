@@ -59,7 +59,11 @@ function init() {
     const perthMarkerPopup = perthMarker.bindPopup('Perth city from the popup')
     const perthMarkerTooltip = perthMarker.bindTooltip('Perth city from the tooltip').openTooltip()
 
-    var drawPolyLine = L.polyline([], { color: 'red' }).addTo(mymap)
+    var drawPolyLine = L.polyline([], {
+        color: 'red',
+        smoothFactor: 0.1,
+        weight: 6,
+    }).addTo(mymap)
 
     mymap.on('click', function (e) {
         let latlng = e.latlng
